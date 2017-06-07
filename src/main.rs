@@ -6,7 +6,11 @@ use std::env;
 use std::io;
 use std::io::prelude::*;
 
+use std::thread::sleep;
+use std::time::Duration;
+
 mod frame;
+mod render;
 
 #[allow(dead_code, unused_variables)]
 fn main() {
@@ -27,8 +31,9 @@ fn main() {
             write!(stdout, "{}{}", cursor::Goto(xpos, ypos), c).unwrap();
         }
     }
-    write!(stdout, "{}", cursor::Show).unwrap();
 
+    sleep(Duration::from_secs(5));
 
     stdout.flush().unwrap();
 }
+

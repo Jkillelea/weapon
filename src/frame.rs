@@ -11,7 +11,7 @@ pub fn file_to_frame(filename: &str) -> io::Result<Frame> {
     let mut file = BufReader::new(file);
 
     let mut frame = Vec::new();
-    let mut text  = String::new();         // allocate here instead of inside loop
+    let mut buff  = String::new();
 
     while file.read_line(&mut text)? > 0 { // read all bytes, append to string
         let mut row = Vec::new();          // have to allocate here since we're transferring ownership

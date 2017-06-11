@@ -1,6 +1,6 @@
 extern crate termion;
 use termion::raw::IntoRawMode;
-use termion::cursor;
+use termion::{cursor, clear};
 
 use std::env;
 use std::io;
@@ -21,19 +21,12 @@ fn main() {
     let     stdout = io::stdout();
     let mut stdout = stdout.lock().into_raw_mode().unwrap();
 
-    write!(stdout, "{}", termion::clear::All).unwrap();
-    write!(stdout, "{}", termion::cursor::Goto(1, 1)).unwrap();
+    write!(stdout, "{}", clear::All).unwrap();
+    write!(stdout, "{}", cursor::Goto(1, 1)).unwrap();
 
-    for (y, row) in frame.iter().enumerate() {
-        for (x, c) in row.iter().enumerate() {
-            let xpos = (x + 1) as u16; // need a typecast
-            let ypos = (y + 1) as u16;
-            write!(stdout, "{}{}", cursor::Goto(xpos, ypos), c).unwrap();
-        }
-    }
+    render::draw(&mut stdout, frame).unwrap();
 
     sleep(Duration::from_secs(5));
 
     stdout.flush().unwrap();
 }
-

@@ -20,14 +20,21 @@ mod render;
 
 #[allow(dead_code, unused_variables)]
 fn main() {
-    let filename = env::args().nth(1).unwrap();
-    let frame    = frame::file_to_frame(&filename).unwrap();
+    let filename = match env::args().nth(1) {
+        Some(fname) => fname,
+        None => {
+            println!("No filename given! Exiting...");
+            return
+        }
+    };
+
+    let frame = frame::file_to_frame(&filename).unwrap();
 
     // termainal to raw mode (no output processing, draw to anywhere in terminal)
     let     stdout = io::stdout();
     let mut stdout = stdout.lock().into_raw_mode().unwrap();
+    let      stdin = io::stdin();
 
-    let stdin = io::stdin();
 
     write!(stdout, "{}", clear::All).unwrap();
     write!(stdout, "{}", cursor::Goto(1, 1)).unwrap();
